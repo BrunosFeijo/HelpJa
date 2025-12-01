@@ -24,40 +24,20 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlin.jvm.java
 import android.net.Uri
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.size
+import androidx.compose.ui.res.painterResource
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-           /* HelpJaTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
-                }
-            }*/
             HelpJa()
         }
     }
 }
 
-/*@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    HelpJaTheme {
-        Greeting("Android")
-    }
-}*/
 
 @Composable
 fun HelpJa(){
@@ -74,12 +54,20 @@ fun HelpJa(){
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ) {
+                Image(
+                    painter = painterResource(id = R.drawable.logo_sem_fundo),
+                    contentDescription = "Logo do HelpJá",
+                    modifier = Modifier
+                        .size(300.dp)
+                        .padding(bottom = 24.dp)
+                )
+/*
                 Text(
-                    text = "HelpJa",
+                    text = "HelpJá",
                     fontSize = 30.sp,
                     modifier = Modifier.padding(bottom = 32.dp)
                 )
-
+*/
                 EmergencyButton("🚑 SAMU (192)") {
                     dialNumber(context,"192")
                 }
