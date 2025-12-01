@@ -1,5 +1,6 @@
 package com.example.helpja
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -13,18 +14,16 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.helpja.ui.theme.HelpJaTheme
 import kotlin.jvm.java
+import android.net.Uri
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -62,6 +61,7 @@ fun GreetingPreview() {
 
 @Composable
 fun HelpJa(){
+    val context = LocalContext.current
     MaterialTheme {
         Surface(
             modifier = Modifier.fillMaxSize(),
@@ -79,19 +79,20 @@ fun HelpJa(){
                     fontSize = 30.sp,
                     modifier = Modifier.padding(bottom = 32.dp)
                 )
+
                 EmergencyButton("🚑 SAMU (192)") {
-                    dialNumber("192")
+                    dialNumber(context,"192")
                 }
                 EmergencyButton("🚒 Bombeiros (193)") {
-                    dialNumber("193")
+                    dialNumber(context,"193")
                 }
                 EmergencyButton("🚓 Polícia (190)") {
-                    dialNumber("190")
+                    dialNumber(context,"190")
                 }
                 EmergencyButton("🏥 Hospital Próximo") {
-                    openMaps("hospital")
+                    openMaps(context,"hospital")
                 }
-                val context = LocalContext.current
+
                 EmergencyButton("📍 Compartilhar Localização") {
                     val intent = Intent(context, ShareLocationActivity::class.java)
                     context.startActivity(intent)
@@ -113,4 +114,17 @@ fun EmergencyButton(text: String, onClick: () -> Unit) {
     ) {
         Text(text = text, fontSize = 18.sp)
     }
+}
+
+fun dialNumber(context: Context, number: String)  {
+    val intent = Intent(Intent.ACTION_DIAL)
+    intent.data = Uri.parse("tel:$number")
+    context.startActivity(intent)
+}
+
+fun openMaps(context: Context, query: String){
+    val gmmIntentUri = Uri.parse("geo:0,0?q=$query")
+    val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
+    mapIntent.setPackage("com.google.android.apps.maps")
+    context.startActivity(mapIntent)
 }
